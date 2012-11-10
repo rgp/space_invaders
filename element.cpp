@@ -13,13 +13,11 @@ Element::Element(double xx, double xy, double xwidth, double xheight) {
 }
 
 bool Element::collided(double fX, double fY){
-  printf("x: %0.0f, width: %0.1f .... %0.0f\n",x, width, fX);
-  printf("y: %0.0f, height:%0.1f .... %0.0f\n",y, height, fY);
   if ((this->x + this->width > fX) && (this->x < fX)
       && ((this->y + this->height > fY) && (this->y < fY)))
-
+  {
     return true;
-  else 
+  }else 
     return false;
 }
 

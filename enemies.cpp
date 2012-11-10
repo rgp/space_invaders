@@ -58,3 +58,16 @@ void Enemies::update(){
   }
 }
 
+bool Enemies::collided(double fX, double fY){
+  printf("x: %0.0f, width: %0.1f .... %0.0f\n",this->x, this->x + 8*(this->width+3), fX);
+  printf("y: %0.0f, height:%0.1f .... %0.0f\n",this->y, 4*(this->height+3), fY);
+  if ((this->x + 8*(this->width+3) > fX) && (this->x < fX)
+      && ((this->y - 4*(this->height+3) < fY) && (this->y > fY)))
+  {
+
+    printf("KIM & CHINO K-I-S-S-I-N-G\n");
+    return true;
+  }else 
+    return false;
+}
+
