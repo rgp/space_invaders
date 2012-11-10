@@ -14,6 +14,7 @@ void Enemies::generate(){
       alive[i][j] = 4;
     }
   }
+  direction = 1;
 }
 
 void Enemies::draw_one(){
@@ -46,12 +47,14 @@ void Enemies::draw(){
 void Enemies::update(){
 
   if(
-        this->x < 90 - (8*this->width) &&
-        this->x > -90 
+        this->x <= 80 - (8*(this->width+3)) &&
+        this->x >= -97 
       ){
-    this->x += direction;
+    this->translateX(this->direction);
   }else{
-    direction = -direction;
+    direction = -1 * direction;
+    this->translateX(this->direction);
+    this->translateY(-1);
   }
 }
 
