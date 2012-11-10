@@ -14,6 +14,7 @@
 #include "element.cpp"
 #include "bullet.cpp"
 #include "ship.cpp"
+#include "bullet_node.cpp"
 #include "bullet_observer.cpp"
 
 using namespace std;

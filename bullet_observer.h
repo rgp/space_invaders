@@ -1,7 +1,7 @@
 class BulletObserver{
 
   public:
-  Bullet* bullet;
+  BulletNode* bulletList;
 
   BulletObserver();
   void update();

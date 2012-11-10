@@ -37,3 +37,11 @@ void Element::draw(){
     glVertex2f(x+width,y);
   glEnd();
 }
+
+double Element::centerX(){
+  return this->x + (this->width)/2;
+}
+
+double Element::centerY(){
+  return this->y + (this->height)/2;
+}

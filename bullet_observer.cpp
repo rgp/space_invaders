@@ -6,20 +6,28 @@
 #include  "bullet_observer.h"
 
 BulletObserver::BulletObserver() { 
-  this->bullet = NULL;
+  this->bulletList = NULL;
 }
 
 void BulletObserver::addBullet(Bullet* bullet){
-  this->bullet = bullet;
+  if(this->bulletList == NULL)
+    this->bulletList = new BulletNode();
+  this->bulletList->add(bullet);
 }
+
 void BulletObserver::draw(){
-  if(this->bullet != NULL){
-    this->bullet->draw();
+  BulletNode *node = this->bulletList;
+  while(node != NULL){
+    node->bullet->draw();
+    node = node->next;
   }
 }
 
 void BulletObserver::update(){
-  if(this->bullet != NULL)
-    this->bullet->translateY(1);
+  BulletNode *node = this->bulletList;
+  while(node != NULL){
+    node->bullet->translateY(1);
+    node = node->next;
+  }
 }
 
