@@ -75,7 +75,7 @@ void specialKeyboard(int key, int mouseX, int mouseY){
       break;
   }
 }
-void keyboard(unsigned char key, int mouseX, int mouseY){
+void key_shoot(unsigned char key, int mouseX, int mouseY){
 
   switch(key){
     case ' ':
@@ -109,7 +109,9 @@ int main(int argc, char *argv[])
   glOrtho(-100, 100, -100, 100, -100, 100);
   initGame();
   glutDisplayFunc(display); 
-  glutKeyboardFunc(keyboard);
+  //glutIgnoreKeyRepeat( true );
+  //glutKeyboardFunc(keyboard);
+  glutKeyboardUpFunc(key_shoot);
   glutTimerFunc(speed,myTimer,1);
   glutSpecialFunc(specialKeyboard);
 
