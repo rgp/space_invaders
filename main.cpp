@@ -1,3 +1,8 @@
+/*
+ * Space Inavers
+ *
+ */
+
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -8,13 +13,18 @@
 #include <string>
 #include "element.cpp"
 #include "bullet.h"
-#include "ship.h"
+#include "ship.cpp"
 
 using namespace std;
 
 int speed = 50;
 Ship *ship = new Ship(0,-0.9,0.1,0.1);
+Bullet *bullet;
 
+/*
+ * Game Frame 
+ *
+ */
 static void displayFrame(){
     glColor4f(0.0,0.0,0.5,1.0);
     glLineWidth(10);
@@ -28,12 +38,21 @@ static void displayFrame(){
 
 }
 
+/*
+ * Timer Function
+ *
+ */
 void myTimer( int valor)
 {
   glutTimerFunc(speed,myTimer,1);
+  if(bullet != NULL)
+    bullet->translateY(.01);
   glutPostRedisplay(); 
 }
 
+/* 
+ * Keyboar managment
+ */
 void specialKeyboard(int key, int mouseX, int mouseY){
   switch(key){
     case GLUT_KEY_RIGHT:
@@ -44,14 +63,27 @@ void specialKeyboard(int key, int mouseX, int mouseY){
       break;
   }
 }
+void keyboard(unsigned char key, int mouseX, int mouseY){
+  
+  switch(key){
+    case ' ':
+      bullet = ship->shoot();
+      break;
+  }
+}
 
+/*
+ *
+ * Bob Ross
+ *
+ */
 void display(){
   glClearColor(0.44,0.51,0.34,1);
   glClear(GL_COLOR_BUFFER_BIT);
   displayFrame();
   ship->draw();
-  Bullet *bullet = new Bullet(0,-0.0,0.01,0.1);
-  bullet->draw();
+  if(bullet != NULL)
+    bullet->draw();
   glutSwapBuffers();
 }
 
@@ -62,6 +94,7 @@ int main(int argc, char *argv[])
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutCreateWindow("Space Invaders"); 
     glutDisplayFunc(display); 
+    glutKeyboardFunc(keyboard);
     glutTimerFunc(speed,myTimer,1);
     glutSpecialFunc(specialKeyboard);
 

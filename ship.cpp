@@ -5,4 +5,9 @@
 #endif
 #include  "ship.h"
 
+Bullet* Ship::shoot(){
+  return new Bullet(this->x,this->y);
+}
+
+
 

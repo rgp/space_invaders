@@ -1,2 +1,4 @@
 a.out
 bullet.o element.o
+*.out
+*.o
