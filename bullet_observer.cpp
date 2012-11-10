@@ -12,15 +12,20 @@ BulletObserver::BulletObserver() {
 void BulletObserver::addBullet(Bullet* bullet){
   if(this->bulletList == NULL)
     this->bulletList = new BulletNode(bullet);
+  /** MANY **/
+  //this->bulletList->add(bullet);
 }
 
 void BulletObserver::draw(){
   BulletNode *node = this->bulletList;
   while(node != NULL){
-    if(node->bullet->y > 100)
+    if(node->bullet->y > 100){
+  /** MANY **/
       this->bulletList =NULL;
-    else
+
+    }else{
     node->bullet->draw();
+    }
     node = node->next;
   }
 }

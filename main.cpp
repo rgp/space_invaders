@@ -23,8 +23,8 @@
 
 using namespace std;
 
-int speed = 50;
 int score = 0;
+int speed = 100;
 Enemies *enemies = new Enemies(-90,80,7,7);
 Ship *ship = new Ship(0,-90,10,10);
 BulletObserver *bulletObserver = new BulletObserver();
@@ -73,10 +73,10 @@ void myTimer( int valor)
 void specialKeyboard(int key, int mouseX, int mouseY){
   switch(key){
     case GLUT_KEY_RIGHT:
-      ship->translateX(1);
+      ship->translateX(3);
       break;
     case GLUT_KEY_LEFT: 
-      ship->translateX(-1);
+      ship->translateX(-3);
       break;
   }
 }

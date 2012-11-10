@@ -38,18 +38,21 @@ void Enemies::draw(){
       glTranslatef(this->width+3,0,0);
       if(alive[i][j] > 0)
         draw_one();
+        printf("%d ",alive[i][j]);
     }
+    printf("\n");
     glPopMatrix();
   }
+    printf("\n");
   glPopMatrix();
 }
 
 void Enemies::update(){
 
   if(
-        this->x <= 80 - (8*(this->width+3)) &&
-        this->x >= -97 
-      ){
+      this->x <= 80 - (8*(this->width+3)) &&
+      this->x >= -97 
+    ){
     this->translateX(this->direction);
   }else{
     direction = -1 * direction;
@@ -59,10 +62,48 @@ void Enemies::update(){
 }
 
 bool Enemies::collided(double fX, double fY){
-  if ((this->x + 8*(this->width+3) > fX) && (this->x < fX)
-      && ((this->y - 4*(this->height+3) < fY) && (this->y > fY)))
+  if(
+      (this->x + 8*(this->width+3)+7 >= fX) && (this->x+7 < fX)
+      && 
+      ((this->y - 4*(this->height+3) <= fY) && (this->y-3 > fY))
+    )
   {
-    return true;
+    bool c = false;
+    for(int i = 3 ; !c && i>=0 ; i--){
+      int *r = alive[i];
+      int xd = fX-this->x;
+      int infx = xd - 10;
+      int supx = xd + 10;
+      int ix = xd/10;
+      int iix = ix - 1;
+      int six = ix - 1;
+
+      if(r[ix] > 0){
+        //Verifica colision
+        if(
+            fX > (this->x + (this->width+3)*ix)
+            &&
+            fX < (this->x + (this->width+3)*ix+7)
+          )
+        {
+          r[ix-1] = 0;
+          c = true;
+          printf("%d\n",ix);
+          return true;
+        }
+        r[ix-1] = 10;
+          printf("DIE %d\n",ix);
+      }
+      /*
+      if(r[iix] > 0 ){
+        //Verifica colision
+      }
+      if(r[six] > 0 ){
+        //Verifica colision
+      }
+      */
+    }
+    return false;
   }else 
     return false;
 }
