@@ -9,6 +9,7 @@ class Element{
   bool collided(double, double);
   void translateX(double);
   void translateY(double);
-  double getVector();
+  double centerX();
+  double centerY();
   void draw();
 };
