@@ -18,7 +18,7 @@
 using namespace std;
 
 int speed = 50;
-Ship *ship = new Ship(0,-0.9,0.1,0.1);
+Ship *ship = new Ship(0,-95,10,10);
 Bullet *bullet;
 
 /*
@@ -29,11 +29,11 @@ static void displayFrame(){
     glColor4f(0.0,0.0,0.5,1.0);
     glLineWidth(10);
     glBegin(GL_LINE_STRIP); 
-    glVertex2f(-1,-1);
-    glVertex2f(-1,1);
-    glVertex2f(1,1);
-    glVertex2f(1,-1);
-    glVertex2f(-1,-1);
+    glVertex2f(-100,-100);
+    glVertex2f(-100,100);
+    glVertex2f(100,100);
+    glVertex2f(100,-100);
+    glVertex2f(-100,-100);
     glEnd();
 
 }
@@ -46,7 +46,7 @@ void myTimer( int valor)
 {
   glutTimerFunc(speed,myTimer,1);
   if(bullet != NULL)
-    bullet->translateY(.01);
+    bullet->translateY(1);
   glutPostRedisplay(); 
 }
 
@@ -56,10 +56,10 @@ void myTimer( int valor)
 void specialKeyboard(int key, int mouseX, int mouseY){
   switch(key){
     case GLUT_KEY_RIGHT:
-      ship->translateX(0.01);
+      ship->translateX(1);
       break;
     case GLUT_KEY_LEFT: 
-      ship->translateX(-0.01);
+      ship->translateX(-1);
       break;
   }
 }
@@ -78,7 +78,7 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
  *
  */
 void display(){
-  glClearColor(0.44,0.51,0.34,1);
+  glClearColor(44,51,34,1);
   glClear(GL_COLOR_BUFFER_BIT);
   displayFrame();
   ship->draw();
@@ -93,6 +93,7 @@ int main(int argc, char *argv[])
     glutInitWindowSize(800,800); 
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutCreateWindow("Space Invaders"); 
+    glOrtho(-100, 100, -100, 100, -100, 100);
     glutDisplayFunc(display); 
     glutKeyboardFunc(keyboard);
     glutTimerFunc(speed,myTimer,1);
