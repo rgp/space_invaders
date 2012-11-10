@@ -1,5 +1,11 @@
-class Ship : public Element{
+class Enemies : public Element{
   public:
-    Ship(double xx, double xy, double xwidth, double xheight):Element(xx,xy,xwidth,xheight) {}
-    Bullet* shoot();
+    Enemies(double xx, double xy, double xwidth, double xheight):Element(xx,xy,xwidth,xheight) {}
+
+    int alive[8][4];
+    int direction;
+    void generate();
+    void draw_one();
+    void draw();
+    void update();
 };

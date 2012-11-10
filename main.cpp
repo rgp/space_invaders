@@ -14,27 +14,37 @@
 #include "element.cpp"
 #include "bullet.h"
 #include "ship.cpp"
+#include "enemies.cpp"
 
 using namespace std;
 
 int speed = 50;
-Ship *ship = new Ship(0,-95,10,10);
+Enemies *enemies;
+Ship *ship = new Ship(0,-90,10,10);
 Bullet *bullet;
+
+/*
+ * Game Inicializer
+ */
+void initGame(){
+  enemies = new Enemies(-90,80,7,7);
+  enemies->generate();
+}
 
 /*
  * Game Frame 
  *
  */
 static void displayFrame(){
-    glColor4f(0.0,0.0,0.5,1.0);
-    glLineWidth(10);
-    glBegin(GL_LINE_STRIP); 
-    glVertex2f(-100,-100);
-    glVertex2f(-100,100);
-    glVertex2f(100,100);
-    glVertex2f(100,-100);
-    glVertex2f(-100,-100);
-    glEnd();
+  glColor4f(0.0,0.0,0.5,1.0);
+  glLineWidth(10);
+  glBegin(GL_LINE_STRIP); 
+  glVertex2f(-100,-100);
+  glVertex2f(-100,100);
+  glVertex2f(100,100);
+  glVertex2f(100,-100);
+  glVertex2f(-100,-100);
+  glEnd();
 
 }
 
@@ -47,6 +57,7 @@ void myTimer( int valor)
   glutTimerFunc(speed,myTimer,1);
   if(bullet != NULL)
     bullet->translateY(1);
+  enemies->update();
   glutPostRedisplay(); 
 }
 
@@ -64,7 +75,7 @@ void specialKeyboard(int key, int mouseX, int mouseY){
   }
 }
 void keyboard(unsigned char key, int mouseX, int mouseY){
-  
+
   switch(key){
     case ' ':
       bullet = ship->shoot();
@@ -84,21 +95,23 @@ void display(){
   ship->draw();
   if(bullet != NULL)
     bullet->draw();
+  enemies->draw();
   glutSwapBuffers();
 }
 
 int main(int argc, char *argv[])
 {
-    glutInit(&argc, argv);
-    glutInitWindowSize(800,800); 
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutCreateWindow("Space Invaders"); 
-    glOrtho(-100, 100, -100, 100, -100, 100);
-    glutDisplayFunc(display); 
-    glutKeyboardFunc(keyboard);
-    glutTimerFunc(speed,myTimer,1);
-    glutSpecialFunc(specialKeyboard);
+  glutInit(&argc, argv);
+  glutInitWindowSize(800,800); 
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+  glutCreateWindow("Space Invaders"); 
+  glOrtho(-100, 100, -100, 100, -100, 100);
+  initGame();
+  glutDisplayFunc(display); 
+  glutKeyboardFunc(keyboard);
+  glutTimerFunc(speed,myTimer,1);
+  glutSpecialFunc(specialKeyboard);
 
-    glutMainLoop();
-    return EXIT_SUCCESS;
+  glutMainLoop();
+  return EXIT_SUCCESS;
 }
