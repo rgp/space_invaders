@@ -12,14 +12,15 @@
 #include <stdio.h>
 #include <string>
 #include "element.cpp"
-#include "bullet.h"
+#include "bullet.cpp"
 #include "ship.cpp"
+#include "bullet_observer.cpp"
 
 using namespace std;
 
 int speed = 50;
 Ship *ship = new Ship(0,-95,10,10);
-Bullet *bullet;
+BulletObserver *bulletObserver = new BulletObserver();
 
 /*
  * Game Frame 
@@ -45,8 +46,7 @@ static void displayFrame(){
 void myTimer( int valor)
 {
   glutTimerFunc(speed,myTimer,1);
-  if(bullet != NULL)
-    bullet->translateY(1);
+  bulletObserver->update();
   glutPostRedisplay(); 
 }
 
@@ -67,7 +67,8 @@ void keyboard(unsigned char key, int mouseX, int mouseY){
   
   switch(key){
     case ' ':
-      bullet = ship->shoot();
+      Bullet *bullet = ship->shoot();
+      bulletObserver->addBullet(bullet);
       break;
   }
 }
@@ -82,8 +83,7 @@ void display(){
   glClear(GL_COLOR_BUFFER_BIT);
   displayFrame();
   ship->draw();
-  if(bullet != NULL)
-    bullet->draw();
+  bulletObserver->draw();
   glutSwapBuffers();
 }
 
