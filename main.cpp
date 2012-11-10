@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
+#include <iostream>
+#include <sstream>
 #include "element.cpp"
 #include "bullet.cpp"
 #include "ship.cpp"
@@ -22,6 +24,7 @@
 using namespace std;
 
 int speed = 50;
+int score = 0;
 Enemies *enemies = new Enemies(-90,80,7,7);
 Ship *ship = new Ship(0,-90,10,10);
 BulletObserver *bulletObserver = new BulletObserver();
@@ -60,7 +63,7 @@ void myTimer( int valor)
   glutTimerFunc(speed,myTimer,1);
   enemies->update();
   bulletObserver->update();
-  collider->checkForCollisions();
+  score += collider->checkForCollisions();
   glutPostRedisplay(); 
 }
 
@@ -87,6 +90,15 @@ void key_shoot(unsigned char key, int mouseX, int mouseY){
   }
 }
 
+void displayScore(){
+  stringstream ss;
+  ss << "Score: " <<score;
+  string label = ss.str();
+
+  for(int i =0; i< label.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+}
+
 /*
  *
  * Bob Ross
@@ -99,6 +111,9 @@ void display(){
   ship->draw();
   enemies->draw();
   bulletObserver->draw();
+  glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+  glRasterPos2f(-90, 90);
+  displayScore();
   glutSwapBuffers();
 }
 
@@ -111,8 +126,6 @@ int main(int argc, char *argv[])
   glOrtho(-100, 100, -100, 100, -100, 100);
   initGame();
   glutDisplayFunc(display); 
-  //glutIgnoreKeyRepeat( true );
-  //glutKeyboardFunc(keyboard);
   glutKeyboardUpFunc(key_shoot);
   glutTimerFunc(speed,myTimer,1);
   glutSpecialFunc(specialKeyboard);

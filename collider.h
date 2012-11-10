@@ -3,5 +3,5 @@ class Collider{
   BulletObserver* bulletObserver;
   Enemies* enemies;
   Collider(BulletObserver*, Enemies*);
-  void checkForCollisions();
+  int checkForCollisions();
 };

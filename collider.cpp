@@ -10,11 +10,14 @@ Collider::Collider(BulletObserver* bulletObserver, Enemies* enemies){
   this->enemies = enemies;
 }
 
-void Collider::checkForCollisions(){
+int Collider::checkForCollisions(){
+  int score = 0;
   BulletNode* previous = NULL;
   BulletNode* current = bulletObserver->bulletList;
+
   while(current != NULL){
     if(enemies->collided(current->bullet->x, current->bullet->y)){
+      score += 10;
       if( previous == NULL)
        bulletObserver->bulletList = current->next;
       else{
@@ -27,5 +30,6 @@ void Collider::checkForCollisions(){
       current = current -> next;
   }
 
+  return score;
 }
 
