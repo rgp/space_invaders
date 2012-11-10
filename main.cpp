@@ -7,11 +7,13 @@
 #include <stdio.h>
 #include <string>
 #include "element.cpp"
+#include "bullet.h"
+#include "ship.h"
 
 using namespace std;
 
 int speed = 50;
-Element *ship = new Element(0,-0.9,0.1,0.1);
+Ship *ship = new Ship(0,-0.9,0.1,0.1);
 
 static void displayFrame(){
     glColor4f(0.0,0.0,0.5,1.0);
@@ -48,6 +50,8 @@ void display(){
   glClear(GL_COLOR_BUFFER_BIT);
   displayFrame();
   ship->draw();
+  Bullet *bullet = new Bullet(0,-0.0,0.01,0.1);
+  bullet->draw();
   glutSwapBuffers();
 }
 
@@ -55,7 +59,6 @@ int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
     glutInitWindowSize(800,800); 
-    glutInitWindowPosition(10,10); 
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutCreateWindow("Space Invaders"); 
     glutDisplayFunc(display); 
