@@ -17,19 +17,20 @@
 #include "enemies.cpp"
 #include "bullet_node.cpp"
 #include "bullet_observer.cpp"
+#include "collider.cpp"
 
 using namespace std;
 
 int speed = 50;
-Enemies *enemies;
+Enemies *enemies = new Enemies(-90,80,7,7);
 Ship *ship = new Ship(0,-90,10,10);
 BulletObserver *bulletObserver = new BulletObserver();
+Collider *collider = new Collider(bulletObserver, enemies);
 
 /*
  * Game Inicializer
  */
 void initGame(){
-  enemies = new Enemies(-90,80,7,7);
   enemies->generate();
 }
 
@@ -59,6 +60,7 @@ void myTimer( int valor)
   glutTimerFunc(speed,myTimer,1);
   enemies->update();
   bulletObserver->update();
+  collider->checkForCollisions();
   glutPostRedisplay(); 
 }
 
