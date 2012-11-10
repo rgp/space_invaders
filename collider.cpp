@@ -15,7 +15,6 @@ void Collider::checkForCollisions(){
   BulletNode* current = bulletObserver->bulletList;
   while(current != NULL){
     if(enemies->collided(current->bullet->x, current->bullet->y)){
-      printf("TRUE\n");
       if( previous == NULL)
        bulletObserver->bulletList = current->next;
       else{
@@ -24,7 +23,8 @@ void Collider::checkForCollisions(){
       }
     }
     previous = current;
-    current = current -> next;
+    if(current != NULL)
+      current = current -> next;
   }
 
 }
