@@ -70,17 +70,11 @@ bool Enemies::collided(double fX, double fY){
     for(int i = 3 ; !c && i>=0 ; i--){
       int *r = alive[i];
       int xd = fX-this->x;
-      int infx = xd - 10;
-      int supx = xd + 10;
       int ix = xd/10;
-      int iix = ix - 1;
-      int six = ix - 1;
 
-      if(r[ix] > 0){
-        //Verifica colision
+      if(r[ix-1] > 0){
         if(
-            fX > (this->x + (this->width+3)*ix)
-            &&
+            fX > (this->x + (this->width+3)*ix) &&
             fX < (this->x + (this->width+3)*ix+7)
           )
         {
