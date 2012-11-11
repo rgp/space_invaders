@@ -106,6 +106,7 @@ void displayScore(){
  */
 void display(){
   glClearColor(44,51,34,1);
+  glClearColor(0,0,0,1);
   glClear(GL_COLOR_BUFFER_BIT);
   displayFrame();
   ship->draw();
