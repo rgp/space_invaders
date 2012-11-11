@@ -5,7 +5,7 @@
 #endif
 #include  "enemies.h"
 
-int alive[4][8] ={0,};
+int alive[4][8];
 int direction = 1;
 
 void Enemies::generate(){
@@ -38,12 +38,9 @@ void Enemies::draw(){
       glTranslatef(this->width+3,0,0);
       if(alive[i][j] > 0)
         draw_one();
-        printf("%d ",alive[i][j]);
     }
-    printf("\n");
     glPopMatrix();
   }
-    printf("\n");
   glPopMatrix();
 }
 
@@ -69,6 +66,7 @@ bool Enemies::collided(double fX, double fY){
     )
   {
     bool c = false;
+
     for(int i = 3 ; !c && i>=0 ; i--){
       int *r = alive[i];
       int xd = fX-this->x;
@@ -88,20 +86,11 @@ bool Enemies::collided(double fX, double fY){
         {
           r[ix-1] = 0;
           c = true;
-          printf("%d\n",ix);
+          printf("%d %d -> %d\n",i,ix-1,alive[i][ix-1]);
           return true;
         }
-        r[ix-1] = 10;
-          printf("DIE %d\n",ix);
-      }
-      /*
-      if(r[iix] > 0 ){
-        //Verifica colision
-      }
-      if(r[six] > 0 ){
-        //Verifica colision
-      }
-      */
+      }else
+        continue;
     }
     return false;
   }else 

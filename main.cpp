@@ -24,7 +24,7 @@
 using namespace std;
 
 int score = 0;
-int speed = 100;
+int speed = 50;
 Enemies *enemies = new Enemies(-90,80,7,7);
 Ship *ship = new Ship(0,-90,10,10);
 BulletObserver *bulletObserver = new BulletObserver();
