@@ -73,10 +73,10 @@ void myTimer( int valor)
 void specialKeyboard(int key, int mouseX, int mouseY){
   switch(key){
     case GLUT_KEY_RIGHT:
-      ship->translateX(3);
+      ship->translateX(7);
       break;
     case GLUT_KEY_LEFT: 
-      ship->translateX(-3);
+      ship->translateX(-7);
       break;
   }
 }

@@ -14,7 +14,7 @@ void Enemies::generate(){
   }
   this->direction = 0.7;
 
-  this->padding = 7;
+  this->padding = 10;
 
   this->full_width = 8*this->width + 7*this->padding;
   this->full_height = 4*this->height + 3*this->padding;
@@ -52,8 +52,8 @@ void Enemies::draw(){
 void Enemies::update(){
 
   if(
-      this->x <= (90 - this->full_width) &&
-      this->x >= -90 
+      this->x <= (95 - this->full_width) &&
+      this->x >= -95 
     ){
     this->translateX(this->direction);
   }else{
@@ -79,19 +79,19 @@ int Enemies::getIndexY(double fY){
 
 bool Enemies::collided(double fX, double fY){
   if (
-      (this->x + this->full_width > fX) && (this->x < fX)
+      (this->x + this->full_width >= fX) && (this->x <= fX)
       && 
-      ((this->y - this->full_height < fY) && (this->y > fY))
+      ((this->y - this->full_height <= fY) && (this->y >= fY))
      )
   {
     int _x = (fX - this->x)/(this->width+this->padding);
-    if(fX > _x * (this->width+this->padding)+ this->x &&
-        fX < _x * (this->width+this->padding)+ this->x + this->width
+    if(fX >= _x * (this->width+this->padding)+ this->x &&
+        fX <= _x * (this->width+this->padding)+ this->x + this->width
       ){
       int _y = (fY - (this->y - this->full_height))/(this->height+this->padding);
         _y = 3 - _y;
       if(
-          fY > this->y - _y*(this->height+this->padding) - this->height
+          fY >= (this->y - _y*(this->height+this->padding))
         ){
         if(this->alive[_y][_x] > 0){
           this->alive[_y][_x] = 0;
