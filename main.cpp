@@ -120,7 +120,7 @@ void display(){
 int main(int argc, char *argv[])
 {
   glutInit(&argc, argv);
-  glutInitWindowSize(800,800); 
+  glutInitWindowSize(600,600); 
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutCreateWindow("Space Invaders"); 
   glOrtho(-100, 100, -100, 100, -100, 100);

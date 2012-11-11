@@ -12,4 +12,6 @@ class Element{
   double centerX();
   double centerY();
   void draw();
+  double full_width;
+  double full_height;
 };
