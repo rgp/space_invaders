@@ -8,5 +8,7 @@ class Enemies : public Element{
     void draw_one();
     void draw();
     void update();
+    int getIndexX(double);
+    int getIndexY(double);
     bool collided(double,double);
 };

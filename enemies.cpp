@@ -5,7 +5,7 @@
 #endif
 #include  "enemies.h"
 
-int alive[4][8];
+int alive[4][8] ={0,};
 int direction = 1;
 
 void Enemies::generate(){
@@ -47,9 +47,9 @@ void Enemies::draw(){
 void Enemies::update(){
 
   if(
-      this->x <= 80 - (8*(this->width+3)) &&
-      this->x >= -97 
-    ){
+        this->x <= 80 - (8*(this->width+3)) &&
+        this->x >= -97 
+      ){
     this->translateX(this->direction);
   }else{
     direction = -1 * direction;
@@ -58,36 +58,26 @@ void Enemies::update(){
   }
 }
 
-bool Enemies::collided(double fX, double fY){
-  if(
-      (this->x + 8*(this->width+3)+7 >= fX) && (this->x+7 < fX)
-      && 
-      ((this->y - 4*(this->height+3) <= fY) && (this->y-3 > fY))
-    )
-  {
-    bool c = false;
-
-    for(int i = 3 ; !c && i>=0 ; i--){
-      int *r = alive[i];
-      int xd = fX-this->x;
-      int ix = xd/10;
-
-      if(r[ix-1] > 0){
-        if(
-            fX > (this->x + (this->width+3)*ix) &&
-            fX < (this->x + (this->width+3)*ix+7)
-          )
-        {
-          r[ix-1] = 0;
-          c = true;
-          printf("%d %d -> %d\n",i,ix-1,alive[i][ix-1]);
-          return true;
-        }
-      }else
-        continue;
-    }
-    return false;
-  }else 
-    return false;
+int Enemies::getIndexX(double fX){
+      return (fX - this->x)/10;
 }
 
+int Enemies::getIndexY(double fY){
+      return (this->y-fY)/10;
+}
+
+bool Enemies::collided(double fX, double fY){
+  if ((this->x + 8*(this->width+3) > fX) && (this->x < fX)
+      && ((this->y - 4*(this->height+3) < fY) && (this->y > fY)))
+  {
+    int x,y;
+    x=getIndexX(fX); y=getIndexY(fY);
+    printf("collision:: x:%d y:%d\n",x,y);
+    if(this->alive[y][x]==0)
+      return false;
+    this->alive[y][x]=0;
+    return true;
+  }
+  else 
+    return false;
+}
