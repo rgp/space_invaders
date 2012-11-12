@@ -12,4 +12,7 @@ class Enemies : public Element{
     int getIndexX(double);
     int getIndexY(double);
     bool collided(double,double);
+    Bullet* shoot();
+  private:
+    Bullet* generateBullet(int,int);
 };

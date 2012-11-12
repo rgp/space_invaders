@@ -102,3 +102,34 @@ bool Enemies::collided(double fX, double fY){
   }
   return false;
 }
+
+Bullet* Enemies::generateBullet(int i, int j){
+    int x = this->x + (j* (this->width+this->padding));
+    int y = this->y - (i* (this->height+this->padding));
+    return new Bullet(x,y,1,3);
+}
+
+Bullet* Enemies::shoot(){
+  srand((unsigned)time(0));
+
+  for(int k=0;k<32;k++){
+    int i = rand()%4;
+    int j = rand()%8;
+    if(alive[i][j] != 0)
+      return generateBullet(i,j);
+  }
+
+  if (rand()%2 == 0){
+    for(int i = 1;i<4;i++)
+      for(int j = 1;j<8;j++)
+        if(alive[i][j] != 0) 
+          return generateBullet(i,j);
+  }else{
+    for(int i = 3;i>1;i--)
+      for(int j = 7;j>1;j--)
+        if(alive[i][j] != 0) 
+          return generateBullet(i,j);
+  }
+  return NULL;
+}
+

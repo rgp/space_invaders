@@ -25,15 +25,18 @@ using namespace std;
 
 int score = 0;
 int speed = 50;
+int level = 0;
 Enemies *enemies = new Enemies(-90,80,7,7);
 Ship *ship = new Ship(0,-90,10,10);
 BulletObserver *bulletObserver = new BulletObserver();
 Collider *collider = new Collider(bulletObserver, enemies);
+BulletObserver *enemiesBulletObserver = new BulletObserver();
 
 /*
  * Game Inicializer
  */
 void initGame(){
+  srand((unsigned)time(0));
   enemies->generate();
 }
 
@@ -62,8 +65,12 @@ void myTimer( int valor)
 {
   glutTimerFunc(speed,myTimer,1);
   enemies->update();
-  bulletObserver->update();
+  bulletObserver->update(5);
   score += collider->checkForCollisions();
+  if((rand()%100) == 1){
+    enemiesBulletObserver->addBullet(enemies->shoot());
+  }
+  enemiesBulletObserver->update(-1);
   glutPostRedisplay(); 
 }
 
@@ -84,8 +91,10 @@ void key_shoot(unsigned char key, int mouseX, int mouseY){
 
   switch(key){
     case ' ':
-      Bullet *bullet = ship->shoot();
-      bulletObserver->addBullet(bullet);
+      if(bulletObserver->isEmpty()){
+        Bullet *bullet = ship->shoot();
+        bulletObserver->setBullet(bullet);
+      }
       break;
   }
 }
@@ -111,6 +120,7 @@ void display(){
   ship->draw();
   enemies->draw();
   bulletObserver->draw();
+  enemiesBulletObserver->draw();
   glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
   glRasterPos2f(-90, 90);
   displayScore();
