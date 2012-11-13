@@ -19,6 +19,5 @@ class Enemies : public Element{
     int getIndexX(double);
     int getIndexY(double);
     bool collided(double,double);
-    void loadTexture(Image*,int);
     GLuint texName[6];
 };
