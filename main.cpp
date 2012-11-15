@@ -45,7 +45,7 @@ void initGame(){
  *
  */
 static void displayFrame(){
-  glColor4f(0.0,0.0,0.5,1.0);
+  glColor4f(0.1,1.0,0.1,1.0);
   glLineWidth(10);
   glBegin(GL_LINE_STRIP); 
   glVertex2f(-100,-100);
@@ -132,7 +132,8 @@ void displayScore(){
  */
 void display(){
   glClearColor(44,51,34,1);
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClearColor(0,0,0,1);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   displayFrame();
   ship->draw();
   enemies->draw();

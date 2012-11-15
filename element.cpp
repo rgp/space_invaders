@@ -30,7 +30,7 @@ void Element::translateY(double deltaY){
 }
 
 void Element::draw(){
-  glColor4f(0.0,0.0,0.5,1.0);
+  glColor4f(0.0,1.0,0.0,1.0);
   glLineWidth(1);
   glBegin(GL_QUADS); 
     glVertex2f(x,y);
