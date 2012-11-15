@@ -20,17 +20,20 @@
 #include "bullet_node.cpp"
 #include "bullet_observer.cpp"
 #include "collider.cpp"
+#include "collider_ship.cpp"
 
 using namespace std;
 
 int score = 0;
 int speed = 50;
 int level = 0;
+int lives = 3;
 Enemies *enemies = new Enemies(-90,80,7,7);
 Ship *ship = new Ship(0,-90,10,10);
 BulletObserver *bulletObserver = new BulletObserver();
 Collider *collider = new Collider(bulletObserver, enemies);
 BulletObserver *enemiesBulletObserver = new BulletObserver();
+ColliderShip *colliderShip = new ColliderShip(enemiesBulletObserver, ship);
 
 /*
  * Game Inicializer
@@ -67,11 +70,16 @@ void myTimer( int valor)
   enemies->update();
   bulletObserver->update(5);
   score += collider->checkForCollisions();
-  if((rand()%100) == 1){
+  if((rand()%100) == 1)
     enemiesBulletObserver->addBullet(enemies->shoot());
-  }
+
+  if(colliderShip->checkForCollisions() > 0)
+    lives--;
+
   enemiesBulletObserver->update(-1);
-  glutPostRedisplay(); 
+
+  if( lives >= 0)
+    glutPostRedisplay(); 
 }
 
 /* 
@@ -100,7 +108,7 @@ void key_shoot(unsigned char key, int mouseX, int mouseY){
 }
 
 void displayCoordinates(){
-  glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   glRasterPos2f(50,-85);
   stringstream ss;
   if (bulletObserver->bulletList != NULL){ 
@@ -114,8 +122,18 @@ void displayCoordinates(){
   }
 }
 
+void displayLives(){
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+  glRasterPos2f(0, 90);
+  stringstream ss;
+  ss << "Lives: " <<lives;
+  string label = ss.str();
+
+  for(int i =0; i< label.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+}
 void displayScore(){
-  glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   glRasterPos2f(-90, 90);
   stringstream ss;
   ss << "Score: " <<score;
@@ -141,6 +159,7 @@ void display(){
   enemiesBulletObserver->draw();
   displayScore();
   displayCoordinates();
+  displayLives();
   glutSwapBuffers();
 }
 
