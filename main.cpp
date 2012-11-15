@@ -99,7 +99,24 @@ void key_shoot(unsigned char key, int mouseX, int mouseY){
   }
 }
 
+void displayCoordinates(){
+  glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+  glRasterPos2f(50,-85);
+  stringstream ss;
+  if (bulletObserver->bulletList != NULL){ 
+    Bullet *bullet = bulletObserver->bulletList->bullet;
+    ss << "x:" << bullet->x;
+    ss << "\n y: " << bullet->y;
+    string label = ss.str();
+
+    for(int i =0; i< label.length(); i++)
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+  }
+}
+
 void displayScore(){
+  glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+  glRasterPos2f(-90, 90);
   stringstream ss;
   ss << "Score: " <<score;
   string label = ss.str();
@@ -121,9 +138,8 @@ void display(){
   enemies->draw();
   bulletObserver->draw();
   enemiesBulletObserver->draw();
-  glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-  glRasterPos2f(-90, 90);
   displayScore();
+  displayCoordinates();
   glutSwapBuffers();
 }
 
