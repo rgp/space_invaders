@@ -45,21 +45,26 @@ void Enemies::generate(){
 }
 
 void Enemies::draw_one(int a){
-  //glColor4f(1.0,0.0,0.0,1.0);
+  glColor4f(1.0,0.0,0.0,1.0);
   //glLineWidth(1);
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texName[a]);
 
   glBegin(GL_QUADS); 
-    glTexCoord2f(0.0f, 0.0f);
+    glTexCoord2f(0,1.0f);
   glVertex2f(0,0);
-    glTexCoord2f(0.0f, 1.0f);
-  glVertex2f(0,this->height);
-    glTexCoord2f(1.0f, 1.0f);
-  glVertex2f(this->width, this->height);
+    glTexCoord2f(0.0f, 0.0f);
+  glVertex2f(0,-this->height);
     glTexCoord2f(1.0f, 0.0f);
+  glVertex2f(this->width,-this->height);
+    glTexCoord2f(1.0f, 1.0f);
   glVertex2f(this->width,0);
   glEnd();
+
+  //glActiveTexture(GL_TEXTURE0);
+  glDisable(GL_TEXTURE_2D);
+  //glBindTexture(GL_TEXTURE_2D,0);
+  //glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
 void Enemies::draw(){
