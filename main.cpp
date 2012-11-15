@@ -21,14 +21,18 @@
 #include "bullet_observer.cpp"
 #include "collider.cpp"
 #include "collider_ship.cpp"
+#include <assert.h>
+#include <fstream>
+#include "Imageloader.cpp"
 
 using namespace std;
 
+GLuint bg[1];
 int score = 0;
 int speed = 50;
 int level = 0;
 int lives = 3;
-Enemies *enemies = new Enemies(-90,80,7,7);
+Enemies *enemies = new Enemies(-80,25,7,7);
 Ship *ship = new Ship(0,-90,10,10);
 BulletObserver *bulletObserver = new BulletObserver();
 Collider *collider = new Collider(bulletObserver, enemies);
@@ -41,6 +45,11 @@ ColliderShip *colliderShip = new ColliderShip(enemiesBulletObserver, ship);
 void initGame(){
   srand((unsigned)time(0));
   enemies->generate();
+
+  glGenTextures(1, bg); //Make room for our texture
+  Image* image = loadBMP("images/fondo.bmp");
+  loadTexture(image,0,bg);
+  delete image;
 }
 
 /*
@@ -48,6 +57,38 @@ void initGame(){
  *
  */
 static void displayFrame(){
+
+  GLfloat ambientLight[] = {1.2f, 1.2f, 1.2f, 1.0f};
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+
+  GLfloat directedLight[] = {1.9f, 1.9f, 1.9f, 1.0f};
+  GLfloat directedLightPos[] = {0.0f, 0.0f, 20.0f, 0.0f};
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, directedLight);
+  glLightfv(GL_LIGHT0, GL_POSITION, directedLightPos);
+  //glEnable(GL_DEPTH_TEST);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  glEnable(GL_NORMALIZE); 
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, bg[0]);
+
+  glBegin(GL_QUADS); 
+    glTexCoord2f(0.0f, 0.0f);
+  glVertex2f(-100,-100);
+    glTexCoord2f(1.0f, 0.0f);
+  glVertex2f(100,-100);
+    glTexCoord2f(1.0f, 1.0f);
+  glVertex2f(100,100);
+    glTexCoord2f(0.0f, 1.0f);
+  glVertex2f(-100,100);
+  glEnd();
+
+  glDisable(GL_TEXTURE_2D);
+  //glDisable(GL_DEPTH_TEST);
+  glDisable(GL_LIGHTING);
+  glDisable(GL_LIGHT0);
+  glDisable(GL_NORMALIZE); 
+  /*
   glColor4f(0.1,1.0,0.1,1.0);
   glLineWidth(10);
   glBegin(GL_LINE_STRIP); 
@@ -58,6 +99,7 @@ static void displayFrame(){
   glVertex2f(-100,-100);
   glEnd();
 
+  */
 }
 
 /*
@@ -68,7 +110,7 @@ void myTimer( int valor)
 {
   glutTimerFunc(speed,myTimer,1);
   enemies->update();
-  bulletObserver->update(5);
+  bulletObserver->update(10);
   score += collider->checkForCollisions();
   if((rand()%100) == 1)
     enemiesBulletObserver->addBullet(enemies->shoot());
@@ -151,10 +193,11 @@ void displayScore(){
 void display(){
   glClearColor(44,51,34,1);
   glClearColor(0,0,0,1);
+  glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   displayFrame();
-  ship->draw();
   enemies->draw();
+  ship->draw();
   bulletObserver->draw();
   enemiesBulletObserver->draw();
   displayScore();

@@ -8,7 +8,7 @@
 #include <assert.h>
 #include <fstream>
 
-#include "imageloader.cpp"
+//#include "imageloader.cpp"
 
 using namespace std;
 
@@ -48,17 +48,16 @@ void Enemies::draw_one(int a){
   glColor4f(1.0,0.0,0.0,1.0);
   //glLineWidth(1);
   
-
   GLfloat ambientLight[] = {1.2f, 1.2f, 1.2f, 1.0f};
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
 
   GLfloat directedLight[] = {1.9f, 1.9f, 1.9f, 1.0f};
   GLfloat directedLightPos[] = {0.0f, 0.0f, 20.0f, 0.0f};
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, directedLight);
-  glLightfv(GL_LIGHT0, GL_POSITION, directedLightPos);
+  glLightfv(GL_LIGHT1, GL_DIFFUSE, directedLight);
+  glLightfv(GL_LIGHT1, GL_POSITION, directedLightPos);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
+  glEnable(GL_LIGHT1);
   glEnable(GL_NORMALIZE); 
 
 
@@ -80,15 +79,35 @@ void Enemies::draw_one(int a){
   glDisable(GL_TEXTURE_2D);
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_LIGHTING);
-  glDisable(GL_LIGHT0);
+  glDisable(GL_LIGHT1);
   glDisable(GL_NORMALIZE); 
   //glBindTexture(GL_TEXTURE_2D,0);
   //glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  /*
+  glBegin(GL_LINE_STRIP); 
+  glVertex2f(0,0);
+  glVertex2f(0,-this->height);
+  glVertex2f(this->width,-this->height);
+  glVertex2f(this->width,0);
+  glVertex2f(0,0);
+  glEnd();
+  */
 }
 
 void Enemies::draw(){
   glPushMatrix();
   glTranslatef(x,y,0);
+  /*
+  glColor4f(0.1,1.0,0.1,1.0);
+  glLineWidth(1);
+  glBegin(GL_LINE_STRIP); 
+  glVertex2f(0,0);
+  glVertex2f(0,-this->full_height);
+  glVertex2f(this->full_width,-this->full_height);
+  glVertex2f(this->full_width,0);
+  glVertex2f(0,0);
+  glEnd();
+  */
   for(int i = 0;i<4;i++){
     glPushMatrix();
     glTranslatef(0,-i*(this->height+this->padding),0);
@@ -107,8 +126,8 @@ void Enemies::draw(){
 void Enemies::update(){
 
   if(
-      this->x <= (95 - this->full_width) &&
-      this->x >= -95 
+      this->x <= (85 - this->full_width) &&
+      this->x >= -85 
     ){
     this->translateX(this->direction);
   }else{
@@ -146,14 +165,18 @@ bool Enemies::collided(double fX, double fY){
       int _y = (fY - (this->y - this->full_height))/(this->height+this->padding);
         _y = 3 - _y;
         printf("%d\n",_y);
+        printf("%0.1f %0.1f\n",fY,(this->y - _y*(this->height+this->padding)));
+        /*
       if(
           fY >= (this->y - _y*(this->height+this->padding))
         ){
+        */
         if(this->alive[_y][_x] > 0){
           this->alive[_y][_x] = 0;
           return true;
         }
-      }
+      //}else
+        //printf("%0.1f %0.1f\n",fY,(this->y - _y*(this->height+this->padding)));
     }
   }
   return false;
