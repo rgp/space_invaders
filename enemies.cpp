@@ -50,16 +50,16 @@ void Enemies::draw_one(int a){
   
 
   GLfloat ambientLight[] = {1.2f, 1.2f, 1.2f, 1.0f};
-  //glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
 
   GLfloat directedLight[] = {1.9f, 1.9f, 1.9f, 1.0f};
   GLfloat directedLightPos[] = {0.0f, 0.0f, 20.0f, 0.0f};
-  //glLightfv(GL_LIGHT0, GL_DIFFUSE, directedLight);
-  //glLightfv(GL_LIGHT0, GL_POSITION, directedLightPos);
-  //glEnable(GL_DEPTH_TEST);
-  //glEnable(GL_LIGHTING);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, directedLight);
+  glLightfv(GL_LIGHT0, GL_POSITION, directedLightPos);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-  //glEnable(GL_NORMALIZE); 
+  glEnable(GL_NORMALIZE); 
 
 
   glEnable(GL_TEXTURE_2D);
@@ -145,6 +145,7 @@ bool Enemies::collided(double fX, double fY){
       ){
       int _y = (fY - (this->y - this->full_height))/(this->height+this->padding);
         _y = 3 - _y;
+        printf("%d\n",_y);
       if(
           fY >= (this->y - _y*(this->height+this->padding))
         ){
