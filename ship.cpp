@@ -6,7 +6,7 @@
 #include  "ship.h"
 
 Bullet* Ship::shoot(){
-  return new Bullet(this->centerX(), this->centerY());
+  return new Bullet(this->centerX(), this->centerY(), 2, 4);
 }
 
 

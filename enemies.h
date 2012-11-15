@@ -20,4 +20,7 @@ class Enemies : public Element{
     int getIndexY(double);
     bool collided(double,double);
     GLuint texName[6];
+    Bullet* shoot();
+  private:
+    Bullet* generateBullet(int,int);
 };

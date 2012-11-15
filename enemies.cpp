@@ -47,6 +47,21 @@ void Enemies::generate(){
 void Enemies::draw_one(int a){
   glColor4f(1.0,0.0,0.0,1.0);
   //glLineWidth(1);
+  
+
+  GLfloat ambientLight[] = {1.2f, 1.2f, 1.2f, 1.0f};
+  //glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+
+  GLfloat directedLight[] = {1.9f, 1.9f, 1.9f, 1.0f};
+  GLfloat directedLightPos[] = {0.0f, 0.0f, 20.0f, 0.0f};
+  //glLightfv(GL_LIGHT0, GL_DIFFUSE, directedLight);
+  //glLightfv(GL_LIGHT0, GL_POSITION, directedLightPos);
+  //glEnable(GL_DEPTH_TEST);
+  //glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  //glEnable(GL_NORMALIZE); 
+
+
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texName[a]);
 
@@ -63,6 +78,10 @@ void Enemies::draw_one(int a){
 
   //glActiveTexture(GL_TEXTURE0);
   glDisable(GL_TEXTURE_2D);
+  glDisable(GL_DEPTH_TEST);
+  glDisable(GL_LIGHTING);
+  glDisable(GL_LIGHT0);
+  glDisable(GL_NORMALIZE); 
   //glBindTexture(GL_TEXTURE_2D,0);
   //glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
@@ -138,3 +157,34 @@ bool Enemies::collided(double fX, double fY){
   }
   return false;
 }
+
+Bullet* Enemies::generateBullet(int i, int j){
+    int x = this->x + (j* (this->width+this->padding));
+    int y = this->y - (i* (this->height+this->padding));
+    return new Bullet(x,y,1,3);
+}
+
+Bullet* Enemies::shoot(){
+  srand((unsigned)time(0));
+
+  for(int k=0;k<32;k++){
+    int i = rand()%4;
+    int j = rand()%8;
+    if(alive[i][j] != 0)
+      return generateBullet(i,j);
+  }
+
+  if (rand()%2 == 0){
+    for(int i = 1;i<4;i++)
+      for(int j = 1;j<8;j++)
+        if(alive[i][j] != 0) 
+          return generateBullet(i,j);
+  }else{
+    for(int i = 3;i>1;i--)
+      for(int j = 7;j>1;j--)
+        if(alive[i][j] != 0) 
+          return generateBullet(i,j);
+  }
+  return NULL;
+}
+
