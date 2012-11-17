@@ -47,6 +47,7 @@ bool paused = false;
 void initGame(){
   srand((unsigned)time(0));
   enemies->generate();
+  ship->generate();
 
   glGenTextures(1, bg); //Make room for our texture
   Image* image = loadBMP("images/fondo.bmp");
@@ -104,6 +105,9 @@ static void displayFrame(){
   */
 }
 
+bool dead(){
+  return (lives < 0);
+}
 /*
  * Timer Function
  *
@@ -113,7 +117,7 @@ void myTimer( int valor)
   if(!paused){
     bulletObserver->update(10);
     enemiesBulletObserver->update(-1);
-    if( lives >= 0 && !enemies->update()){
+    if( !dead() && !enemies->update()){
       glutTimerFunc(speed,myTimer,1);
       score += collider->checkForCollisions();
       //RESET
@@ -127,16 +131,15 @@ void myTimer( int valor)
       }else
         bulletYield--;
 
-      glutPostRedisplay(); 
       if(colliderShip->checkForCollisions() > 0)
         lives--;
-    } 
+    }
   }else{ 
     //TODO
     //render pause
       glutTimerFunc(speed*10,myTimer,1);
-      glutPostRedisplay(); 
   }
+  glutPostRedisplay(); 
 }
 
 /* 
@@ -168,6 +171,24 @@ void key_shoot(unsigned char key, int mouseX, int mouseY){
   }
 }
 
+void displayGameOver(){
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+  glRasterPos2f(-15, -20);
+  string label = "GAME OVER!!!";
+  for(int i =0; i< label.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+}
+
+void displayPause(){
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+  glRasterPos2f(-15, -20);
+  string label = "GAME OVER!!!";
+  for(int i =0; i< label.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+}
+
+
+
 void displayCoordinates(){
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   if (bulletObserver->bulletList != NULL){ 
@@ -192,7 +213,7 @@ void displayLives(){
   glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
   glRasterPos2f(34.5, 34);
   stringstream ss;
-  ss <<(lives >= 0 ? lives : 0);
+  ss <<(!dead() ? lives : 0);
   string label = ss.str();
 
   for(int i =0; i< label.length(); i++)
@@ -220,10 +241,16 @@ void display(){
   glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   displayFrame();
-  enemies->draw();
-  ship->draw();
-  bulletObserver->draw();
-  enemiesBulletObserver->draw();
+  if ( dead()){
+    displayGameOver();
+  } else {
+    if(paused)
+      displayPause();
+    enemies->draw();
+    ship->draw();
+    bulletObserver->draw();
+    enemiesBulletObserver->draw();
+  }
   displayScore();
   displayCoordinates();
   displayLives();
