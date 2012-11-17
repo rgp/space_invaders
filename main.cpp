@@ -39,6 +39,7 @@ Collider *collider = new Collider(bulletObserver, enemies);
 BulletObserver *enemiesBulletObserver = new BulletObserver();
 ColliderShip *colliderShip = new ColliderShip(enemiesBulletObserver, ship);
 int bulletYield = 0;
+int bulletYieldIndex = 0;
 bool paused = false;
 
 /*
@@ -54,6 +55,13 @@ void initGame(){
   loadTexture(image,0,bg);
   delete image;
 }
+
+void resetElements(){ 
+  enemies = new Enemies(-80,25,7,7);
+  collider = new Collider(bulletObserver, enemies);
+  colliderShip = new ColliderShip(enemiesBulletObserver, ship);
+}
+
 
 /*
  * Game Frame 
@@ -87,26 +95,24 @@ static void displayFrame(){
   glEnd();
 
   glDisable(GL_TEXTURE_2D);
-  //glDisable(GL_DEPTH_TEST);
   glDisable(GL_LIGHTING);
   glDisable(GL_LIGHT0);
   glDisable(GL_NORMALIZE); 
-  /*
-  glColor4f(0.1,1.0,0.1,1.0);
-  glLineWidth(10);
-  glBegin(GL_LINE_STRIP); 
-  glVertex2f(-100,-100);
-  glVertex2f(-100,100);
-  glVertex2f(100,100);
-  glVertex2f(100,-100);
-  glVertex2f(-100,-100);
-  glEnd();
-
-  */
 }
 
 bool dead(){
   return (lives < 0);
+}
+void levelUp(){
+  score+=10;
+  level++;
+  if(speed > 20) 
+    speed-=10; 
+
+  if(bulletYieldIndex < 19) 
+    bulletYieldIndex--;
+  resetElements();
+  enemies->generate();
 }
 /*
  * Timer Function
@@ -121,13 +127,12 @@ void myTimer( int valor)
       glutTimerFunc(speed,myTimer,1);
       score += collider->checkForCollisions();
       //RESET
-      if(score > 1 && score%20 == 0){
-        //enemies = new Enemies(-80,25,7,7);
-        //enemies->generate();
+      if(score > 1 && score%320 == 0){
+        levelUp();
       }
       if(bulletYield == 0){
         enemiesBulletObserver->addBullet(enemies->shoot(ship->x));
-        bulletYield = 20;
+        bulletYield = 20 - bulletYieldIndex;
       }else
         bulletYield--;
 

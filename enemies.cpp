@@ -8,8 +8,6 @@
 #include <assert.h>
 #include <fstream>
 
-//#include "imageloader.cpp"
-
 using namespace std;
 
 
@@ -46,7 +44,6 @@ void Enemies::generate(){
 
 void Enemies::draw_one(int a){
   glColor4f(1.0,0.0,0.0,1.0);
-  //glLineWidth(1);
   
   GLfloat ambientLight[] = {1.2f, 1.2f, 1.2f, 1.0f};
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
@@ -75,39 +72,16 @@ void Enemies::draw_one(int a){
   glVertex2f(this->width,0);
   glEnd();
 
-  //glActiveTexture(GL_TEXTURE0);
   glDisable(GL_TEXTURE_2D);
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_LIGHTING);
   glDisable(GL_LIGHT1);
   glDisable(GL_NORMALIZE); 
-  //glBindTexture(GL_TEXTURE_2D,0);
-  //glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-  /*
-  glBegin(GL_LINE_STRIP); 
-  glVertex2f(0,0);
-  glVertex2f(0,-this->height);
-  glVertex2f(this->width,-this->height);
-  glVertex2f(this->width,0);
-  glVertex2f(0,0);
-  glEnd();
-  */
 }
 
 void Enemies::draw(){
   glPushMatrix();
   glTranslatef(x,y,0);
-  /*
-  glColor4f(0.1,1.0,0.1,1.0);
-  glLineWidth(1);
-  glBegin(GL_LINE_STRIP); 
-  glVertex2f(0,0);
-  glVertex2f(0,-this->full_height);
-  glVertex2f(this->full_width,-this->full_height);
-  glVertex2f(this->full_width,0);
-  glVertex2f(0,0);
-  glEnd();
-  */
   for(int i = 0;i<4;i++){
     glPushMatrix();
     glTranslatef(0,-i*(this->height+this->padding),0);
@@ -208,28 +182,6 @@ Bullet* Enemies::shoot(double x){
       }
     }
   }
-
-
-/* CHINO
-  for(int k=0;k<32;k++){
-    int i = rand()%4;
-    int j = rand()%8;
-    if(alive[i][j] != 0)
-      return generateBullet(i,j);
-  }
-
-  if (rand()%2 == 0){
-    for(int i = 1;i<4;i++)
-      for(int j = 1;j<8;j++)
-        if(alive[i][j] != 0) 
-          return generateBullet(i,j);
-  }else{
-    for(int i = 3;i>1;i--)
-      for(int j = 7;j>1;j--)
-        if(alive[i][j] != 0) 
-          return generateBullet(i,j);
-  }
-  */
   return NULL;
 }
 
