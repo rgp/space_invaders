@@ -84,13 +84,13 @@ static void displayFrame(){
   glBindTexture(GL_TEXTURE_2D, bg[0]);
 
   glBegin(GL_QUADS); 
-    glTexCoord2f(0.0f, 0.0f);
+  glTexCoord2f(0.0f, 0.0f);
   glVertex2f(-100,-100);
-    glTexCoord2f(1.0f, 0.0f);
+  glTexCoord2f(1.0f, 0.0f);
   glVertex2f(100,-100);
-    glTexCoord2f(1.0f, 1.0f);
+  glTexCoord2f(1.0f, 1.0f);
   glVertex2f(100,100);
-    glTexCoord2f(0.0f, 1.0f);
+  glTexCoord2f(0.0f, 1.0f);
   glVertex2f(-100,100);
   glEnd();
 
@@ -142,7 +142,7 @@ void myTimer( int valor)
   }else{ 
     //TODO
     //render pause
-      glutTimerFunc(speed*10,myTimer,1);
+    glutTimerFunc(speed,myTimer,1);
   }
   glutPostRedisplay(); 
 }
@@ -164,19 +164,19 @@ void specialKeyboard(int key, int mouseX, int mouseY){
 }
 void key_shoot(unsigned char key, int mouseX, int mouseY){
 
-  if(!paused){
-    switch(key){
-      case ' ':
+  switch(key){
+    case ' ':
+      if(!paused){
         if(bulletObserver->isEmpty()){
           Bullet *bullet = ship->shoot();
           bulletObserver->setBullet(bullet);
         }
-        break;
-      case 'p':
-      case 'P':
-        paused = !paused;
-        break;
-    }
+      }
+      break;
+    case 'p':
+    case 'P':
+      paused = !paused;
+      break;
   }
 }
 
