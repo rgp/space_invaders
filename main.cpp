@@ -151,16 +151,21 @@ void key_shoot(unsigned char key, int mouseX, int mouseY){
 
 void displayCoordinates(){
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-  glRasterPos2f(50,-85);
-  stringstream ss;
   if (bulletObserver->bulletList != NULL){ 
     Bullet *bullet = bulletObserver->bulletList->bullet;
+    glRasterPos2f(75,-75);
+    stringstream ss;
     ss << "x:" << bullet->x;
-    ss << "\n y: " << bullet->y;
     string label = ss.str();
-
     for(int i =0; i< label.length(); i++)
-      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, label[i]);
+
+    glRasterPos2f(75,-80);
+    stringstream sss;
+    sss << "y: " << bullet->y;
+    string label2 = sss.str();
+    for(int i =0; i< label2.length(); i++)
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, label2[i]);
   }
 }
 
