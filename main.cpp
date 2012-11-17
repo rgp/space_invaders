@@ -142,8 +142,8 @@ void myTimer( int valor)
   }else{ 
     //TODO
     //render pause
+      glutTimerFunc(speed*10,myTimer,1);
   }
-
   glutPostRedisplay(); 
 }
 
@@ -151,24 +151,32 @@ void myTimer( int valor)
  * Keyboar managment
  */
 void specialKeyboard(int key, int mouseX, int mouseY){
-  switch(key){
-    case GLUT_KEY_RIGHT:
-      ship->translateX(4);
-      break;
-    case GLUT_KEY_LEFT: 
-      ship->translateX(-4);
-      break;
+  if(!paused){
+    switch(key){
+      case GLUT_KEY_RIGHT:
+        ship->translateX(4);
+        break;
+      case GLUT_KEY_LEFT: 
+        ship->translateX(-4);
+        break;
+    }
   }
 }
 void key_shoot(unsigned char key, int mouseX, int mouseY){
 
-  switch(key){
-    case ' ':
-      if(bulletObserver->isEmpty()){
-        Bullet *bullet = ship->shoot();
-        bulletObserver->setBullet(bullet);
-      }
-      break;
+  if(!paused){
+    switch(key){
+      case ' ':
+        if(bulletObserver->isEmpty()){
+          Bullet *bullet = ship->shoot();
+          bulletObserver->setBullet(bullet);
+        }
+        break;
+      case 'p':
+      case 'P':
+        paused = !paused;
+        break;
+    }
   }
 }
 
@@ -176,6 +184,22 @@ void displayGameOver(){
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   glRasterPos2f(-15, -20);
   string label = "GAME OVER!!!";
+  for(int i =0; i< label.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+}
+
+void displayPause(){
+  glColor4f(0.0f, 0.0f, 0.0f, 0.7f);
+  glBegin(GL_QUADS); 
+  glVertex2f(-100,-100);
+  glVertex2f(100,-100);
+  glVertex2f(100,100);
+  glVertex2f(-100,100);
+  glEnd();
+
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+  glRasterPos2f(-5, -20);
+  string label = "PAUSE";
   for(int i =0; i< label.length(); i++)
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
 }
@@ -241,10 +265,12 @@ void display(){
     ship->draw();
     bulletObserver->draw();
     enemiesBulletObserver->draw();
+    displayCoordinates();
   }
   displayScore();
-  displayCoordinates();
   displayLives();
+  if(paused)
+    displayPause();
   glutSwapBuffers();
 }
 
@@ -256,6 +282,8 @@ int main(int argc, char *argv[])
   glutCreateWindow("Space Invaders"); 
   glOrtho(-100, 100, -100, 100, -100, 100);
   initGame();
+  glEnable(GL_BLEND);
+  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glutDisplayFunc(display); 
   glutKeyboardUpFunc(key_shoot);
   glutTimerFunc(speed,myTimer,1);
