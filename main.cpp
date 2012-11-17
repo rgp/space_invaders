@@ -181,8 +181,8 @@ void key_shoot(unsigned char key, int mouseX, int mouseY){
 }
 
 void displayGameOver(){
-  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-  glRasterPos2f(-15, -20);
+  glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+  glRasterPos2f(-20, -30);
   string label = "GAME OVER!!!";
   for(int i =0; i< label.length(); i++)
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
