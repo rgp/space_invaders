@@ -47,6 +47,7 @@ bool paused = false;
 void initGame(){
   srand((unsigned)time(0));
   enemies->generate();
+  ship->generate();
 
   glGenTextures(1, bg); //Make room for our texture
   Image* image = loadBMP("images/fondo.bmp");
