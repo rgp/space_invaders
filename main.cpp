@@ -40,7 +40,9 @@ BulletObserver *enemiesBulletObserver = new BulletObserver();
 ColliderShip *colliderShip = new ColliderShip(enemiesBulletObserver, ship);
 int bulletYield = 0;
 int bulletYieldIndex = 0;
-bool paused = false;
+bool paused = true;
+bool init = true;
+bool levelUpeado = true;
 
 /*
  * Game Inicializer
@@ -104,7 +106,6 @@ bool dead(){
   return (lives < 0);
 }
 void levelUp(){
-  score+=10;
   level++;
   if(speed > 20) 
     speed-=10; 
@@ -120,15 +121,19 @@ void levelUp(){
  */
 void myTimer( int valor)
 {
-  if(!paused){
+  if(!paused && !init){
     bulletObserver->update(10);
     enemiesBulletObserver->update(-1);
     if( !dead() && !enemies->update()){
       glutTimerFunc(speed,myTimer,1);
+      int scum = score;
       score += collider->checkForCollisions();
+      if(score > scum)
+        levelUpeado = false;
       //RESET
-      if(score > 1 && score%320 == 0){
+      if(score > 1 && score%320 == 0 && !levelUpeado){
         levelUp();
+        levelUpeado = true;
       }
       if(bulletYield == 0){
         enemiesBulletObserver->addBullet(enemies->shoot(ship->x));
@@ -173,6 +178,11 @@ void key_shoot(unsigned char key, int mouseX, int mouseY){
         }
       }
       break;
+    case 's':
+      if(init)
+        init = false;
+      else
+        break;
     case 'p':
     case 'P':
       paused = !paused;
@@ -204,6 +214,37 @@ void displayPause(){
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
 }
 
+void displayWelcome(){
+  glColor4f(0.0f, 0.0f, 0.0f, 0.8f);
+  glBegin(GL_QUADS); 
+  glVertex2f(-100,-100);
+  glVertex2f(100,-100);
+  glVertex2f(100,100);
+  glVertex2f(-100,100);
+  glEnd();
+
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+  glRasterPos2f(-30, 0);
+  string label = "PRESS s to START!";
+  for(int i =0; i< label.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+  glRasterPos2f(-35, -15);
+  label = "<- Moves LEFT";
+  for(int i =0; i< label.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+  glRasterPos2f(-35, -25);
+  label = "-> Moves RIGHT";
+  for(int i =0; i< label.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+  glRasterPos2f(-35, -35);
+  label = "SPACE shoots bullets into space";
+  for(int i =0; i< label.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+  glRasterPos2f(-35, -45);
+  label = "P pauses the game";
+  for(int i =0; i< label.length(); i++)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+}
 
 
 void displayCoordinates(){
@@ -269,8 +310,10 @@ void display(){
   }
   displayScore();
   displayLives();
-  if(paused)
+  if(paused && !init)
     displayPause();
+  if(init)
+    displayWelcome();
   glutSwapBuffers();
 }
 
