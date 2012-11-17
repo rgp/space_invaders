@@ -159,24 +159,16 @@ bool Enemies::collided(double fX, double fY){
      )
   {
     int _x = (fX - this->x)/(this->width+this->padding);
-    if(fX >= _x * (this->width+this->padding)+ this->x &&
-        fX <= _x * (this->width+this->padding)+ this->x + this->width
+    if(fX >= (_x * (this->width+this->padding)+ this->x)-5 &&
+        fX < (_x * (this->width+this->padding)+ this->x + this->width)
       ){
       int _y = (fY - (this->y - this->full_height))/(this->height+this->padding);
+
         _y = 3 - _y;
-        printf("%d\n",_y);
-        printf("%0.1f %0.1f\n",fY,(this->y - _y*(this->height+this->padding)));
-        /*
-      if(
-          fY >= (this->y - _y*(this->height+this->padding))
-        ){
-        */
         if(this->alive[_y][_x] > 0){
           this->alive[_y][_x] = 0;
           return true;
         }
-      //}else
-        //printf("%0.1f %0.1f\n",fY,(this->y - _y*(this->height+this->padding)));
     }
   }
   return false;
