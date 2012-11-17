@@ -118,8 +118,8 @@ void myTimer( int valor)
       score += collider->checkForCollisions();
       //RESET
       if(score > 1 && score%20 == 0){
-        //enemies = new Enemies(-80,25,7,7);
-        //enemies->generate();
+        enemies = new Enemies(-80,25,7,7);
+        enemies->generate();
       }
       if(bulletYield == 0){
         enemiesBulletObserver->addBullet(enemies->shoot(ship->x));
@@ -134,6 +134,7 @@ void myTimer( int valor)
   }else{ 
     //TODO
     //render pause
+      glutTimerFunc(speed*10,myTimer,1);
       glutPostRedisplay(); 
   }
 }
@@ -159,6 +160,10 @@ void key_shoot(unsigned char key, int mouseX, int mouseY){
         Bullet *bullet = ship->shoot();
         bulletObserver->setBullet(bullet);
       }
+      break;
+    case 'p':
+    case 'P':
+      paused = !paused;
       break;
   }
 }
