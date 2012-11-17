@@ -10,14 +10,17 @@ BulletObserver::BulletObserver() {
 }
 
 void BulletObserver::addBullet(Bullet* bullet){
-  if(this->bulletList == NULL)
-    this->setBullet(bullet);
-  else
-    this->bulletList->add(bullet);
+  if(bullet != NULL){
+    if(this->bulletList == NULL)
+      this->setBullet(bullet);
+    else
+      this->bulletList->add(bullet);
+  }
 }
 
 void BulletObserver::setBullet(Bullet* bullet){
-  this->bulletList = new BulletNode(bullet);
+  if(bullet != NULL)
+    this->bulletList = new BulletNode(bullet);
 }
 
 void BulletObserver::draw(){

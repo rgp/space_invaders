@@ -38,6 +38,7 @@ BulletObserver *bulletObserver = new BulletObserver();
 Collider *collider = new Collider(bulletObserver, enemies);
 BulletObserver *enemiesBulletObserver = new BulletObserver();
 ColliderShip *colliderShip = new ColliderShip(enemiesBulletObserver, ship);
+int bulletYield = 0;
 
 /*
  * Game Inicializer
@@ -112,8 +113,11 @@ void myTimer( int valor)
   enemies->update();
   bulletObserver->update(10);
   score += collider->checkForCollisions();
-  if((rand()%100) == 1)
-    enemiesBulletObserver->addBullet(enemies->shoot());
+  if(bulletYield == 0){
+    enemiesBulletObserver->addBullet(enemies->shoot(ship->x));
+    bulletYield = 20;
+  }else
+    bulletYield--;
 
   if(colliderShip->checkForCollisions() > 0)
     lives--;

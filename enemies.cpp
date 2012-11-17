@@ -177,12 +177,36 @@ bool Enemies::collided(double fX, double fY){
 Bullet* Enemies::generateBullet(int i, int j){
     int x = this->x + (j* (this->width+this->padding));
     int y = this->y - (i* (this->height+this->padding));
+    y -= this->height + 3;
+    x += this->width/2;
     return new Bullet(x,y,1,3);
 }
 
-Bullet* Enemies::shoot(){
+Bullet* Enemies::shoot(double x){
   srand((unsigned)time(0));
 
+  int _x = (x - this->x)/(this->width+this->padding);
+  int dx = rand()%2;
+  int ix = _x - dx;
+  int sx = _x + dx;
+  if(ix < 0) ix = 0;
+  if(ix > 7) ix = 7;
+  if(sx < 0) sx = 0;
+  if(sx > 7) sx = 7;
+
+  for(int j = ix; j<=sx;j++){
+    if(rand()%10 > 1){
+      int o = 3;
+      while(o >= 0){
+        if(alive[o][j] > 0)
+          return generateBullet(o,j);
+        o--;
+      }
+    }
+  }
+
+
+/* CHINO
   for(int k=0;k<32;k++){
     int i = rand()%4;
     int j = rand()%8;
@@ -201,6 +225,7 @@ Bullet* Enemies::shoot(){
         if(alive[i][j] != 0) 
           return generateBullet(i,j);
   }
+  */
   return NULL;
 }
 

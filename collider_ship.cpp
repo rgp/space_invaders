@@ -13,13 +13,13 @@ ColliderShip::ColliderShip(BulletObserver* bulletObserver, Ship* ship){
 int ColliderShip::checkForCollisions(){
   int score = 0;
   BulletNode* previous = NULL;
-  BulletNode* current = bulletObserver->bulletList;
+  BulletNode* current = this->bulletObserver->bulletList;
 
   while(current != NULL){
     if(ship->collided(current->bullet->x, current->bullet->y)){
       score += 10;
       if( previous == NULL)
-       bulletObserver->bulletList = current->next;
+       this->bulletObserver->bulletList = current->next;
       else{
         current = current -> next;
         previous->next = current;
