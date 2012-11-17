@@ -15,7 +15,7 @@ class Enemies : public Element{
     void generate();
     void draw_one(int);
     void draw();
-    void update();
+    bool update();
     int getIndexX(double);
     int getIndexY(double);
     bool collided(double,double);

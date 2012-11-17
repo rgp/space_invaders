@@ -26,10 +26,11 @@ void BulletObserver::setBullet(Bullet* bullet){
 void BulletObserver::draw(){
   BulletNode *node = this->bulletList;
   while(node != NULL){
-    if(node->bullet->y > 25)
+    if(node->bullet->y > 25 )
       this->bulletList = NULL;
     else
-      node->bullet->draw();
+      if (node->bullet->y > -90)
+        node->bullet->draw();
     node = node->next;
   }
 }

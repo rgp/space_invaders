@@ -123,7 +123,7 @@ void Enemies::draw(){
   glPopMatrix();
 }
 
-void Enemies::update(){
+bool Enemies::update(){
 
   if(
       this->x <= (85 - this->full_width) &&
@@ -135,6 +135,10 @@ void Enemies::update(){
     this->translateX(this->direction);
     this->translateY(-1);
   }
+
+  if(this->y - this->full_height < -90)
+    return true;
+  return false;
 }
 
 int Enemies::getIndexX(double fX){

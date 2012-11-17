@@ -39,6 +39,7 @@ Collider *collider = new Collider(bulletObserver, enemies);
 BulletObserver *enemiesBulletObserver = new BulletObserver();
 ColliderShip *colliderShip = new ColliderShip(enemiesBulletObserver, ship);
 int bulletYield = 0;
+bool paused = false;
 
 /*
  * Game Inicializer
@@ -109,23 +110,32 @@ static void displayFrame(){
  */
 void myTimer( int valor)
 {
-  glutTimerFunc(speed,myTimer,1);
-  enemies->update();
-  bulletObserver->update(10);
-  score += collider->checkForCollisions();
-  if(bulletYield == 0){
-    enemiesBulletObserver->addBullet(enemies->shoot(ship->x));
-    bulletYield = 20;
-  }else
-    bulletYield--;
+  if(!paused){
+    bulletObserver->update(10);
+    enemiesBulletObserver->update(-1);
+    if( lives >= 0 && !enemies->update()){
+      glutTimerFunc(speed,myTimer,1);
+      score += collider->checkForCollisions();
+      //RESET
+      if(score > 1 && score%20 == 0){
+        //enemies = new Enemies(-80,25,7,7);
+        //enemies->generate();
+      }
+      if(bulletYield == 0){
+        enemiesBulletObserver->addBullet(enemies->shoot(ship->x));
+        bulletYield = 20;
+      }else
+        bulletYield--;
 
-  if(colliderShip->checkForCollisions() > 0)
-    lives--;
-
-  enemiesBulletObserver->update(-1);
-
-  if( lives >= 0)
-    glutPostRedisplay(); 
+      glutPostRedisplay(); 
+      if(colliderShip->checkForCollisions() > 0)
+        lives--;
+    } 
+  }else{ 
+    //TODO
+    //render pause
+      glutPostRedisplay(); 
+  }
 }
 
 /* 
@@ -134,10 +144,10 @@ void myTimer( int valor)
 void specialKeyboard(int key, int mouseX, int mouseY){
   switch(key){
     case GLUT_KEY_RIGHT:
-      ship->translateX(7);
+      ship->translateX(4);
       break;
     case GLUT_KEY_LEFT: 
-      ship->translateX(-7);
+      ship->translateX(-4);
       break;
   }
 }
@@ -174,24 +184,24 @@ void displayCoordinates(){
 }
 
 void displayLives(){
-  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-  glRasterPos2f(0, 90);
+  glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+  glRasterPos2f(34.5, 34);
   stringstream ss;
-  ss << "Lives: " <<lives;
+  ss <<(lives >= 0 ? lives : 0);
   string label = ss.str();
 
   for(int i =0; i< label.length(); i++)
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, label[i]);
 }
 void displayScore(){
-  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-  glRasterPos2f(-90, 90);
+  glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+  glRasterPos2f(-25, 34);
   stringstream ss;
-  ss << "Score: " <<score;
+  ss << score;
   string label = ss.str();
 
   for(int i =0; i< label.length(); i++)
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, label[i]);
+    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, label[i]);
 }
 
 /*
